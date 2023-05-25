@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DummyIosSdk'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'A Dummy Implementation for IOS SDK for Readsee.'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+'DummyIosSdk is a trial and error fo implementation Readsee Sdk for IOS, this is just a personal project'
                        DESC
 
   s.homepage         = 'https://github.com/alviansyahexza/DummyIosSdk'
@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'DummyIosSdk/Classes/**/*.swift'
+  s.source_files = 'Source/**/*.swift'
   
   # s.resource_bundles = {
   #   'DummyIosSdk' => ['DummyIosSdk/Assets/*.png']
