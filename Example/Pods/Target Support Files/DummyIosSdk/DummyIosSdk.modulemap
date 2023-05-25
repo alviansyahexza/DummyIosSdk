@@ -1,0 +1,6 @@
+framework module DummyIosSdk {
+  umbrella header "DummyIosSdk-umbrella.h"
+
+  export *
+  module * { export * }
+}

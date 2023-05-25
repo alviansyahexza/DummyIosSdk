@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let readsee = ReadseeSdk(token: "645224db3b0c920007446800")
+        ReadseeClient.config(apiKey: "645224db3b0c920007446800").createApi()
         return true
     }
     

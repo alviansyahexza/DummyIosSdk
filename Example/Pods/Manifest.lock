@@ -1,0 +1,16 @@
+PODS:
+  - DummyIosSdk (0.1.0)
+
+DEPENDENCIES:
+  - DummyIosSdk (from `../`)
+
+EXTERNAL SOURCES:
+  DummyIosSdk:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DummyIosSdk: 97ad9498f7d7a0ac5361249f3ba89e62261b7ad5
+
+PODFILE CHECKSUM: a58e4525b98e65829b14f2e6ac28eb321b98ce4e
+
+COCOAPODS: 1.12.1
