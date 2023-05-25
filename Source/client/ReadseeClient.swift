@@ -21,11 +21,21 @@ public class ReadseeClient{
     public class ReadseeApi: ReadseeAPIProtocol {
         
         public func event(eventName: String, eventData: [String : Any]) {
-            
+            var params = eventData
+            params[Constant.PARAM_EVENT_NAME] = eventName
+            if (params[Constant.PARAM_DISTINCT_ID] == nil) {
+                params[Constant.PARAM_DISTINCT_ID] = getDistinctId()
+            }
+            addEvent(properties: params)
         }
         
         public func profile(profileData: [String : Any]) {
-            
+            var params = profileData
+            params[Constant.PARAM_ANONYMOUS_ID] = getAnonymousId()
+            if (params[Constant.PARAM_DISTINCT_ID] == nil) {
+                params[Constant.PARAM_DISTINCT_ID] = getDistinctId()
+            }
+            profileUpdate(properties: params)
         }
         
         public func logout() {
@@ -92,6 +102,50 @@ public class ReadseeClient{
                     }
                 } catch {
                     
+                }
+            }
+            task.resume()
+        }
+        
+        private func addEvent(properties: [String: Any]) {
+            guard let url = URL(string: Constant.BASE_URL_EVENT) else { return }
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(getToken())", forHTTPHeaderField: "Authorization")
+            request.httpBody = try? JSONSerialization.data(withJSONObject: properties)
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                guard let httpResponse = response as? HTTPURLResponse,
+                        (200...299).contains(httpResponse.statusCode) else {
+                    print("Invalid response")
+                    return
+                }
+                    
+                do {
+                    if let data = data {
+                        // Deserialize the JSON data into a dictionary
+                        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] else {
+                                print("Error: Failed to deserialize JSON")
+                                return
+                            }
+                        if (json["_$distinct_id"] != nil) {
+                            self.saveDistinct(id: json["_$distinct_id"]!)
+                        }
+                        if (json["_$anonymous_id"] != nil) {
+                            self.saveAnonymous(id: json["_$anonymous_id"]!)
+                        }
+                    } else {
+                        print("error ")
+                    }
+                } catch let errorParsing {
+                    print("Error Parsing: \(errorParsing.localizedDescription)")
+                    return
                 }
             }
             task.resume()
